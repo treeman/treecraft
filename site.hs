@@ -8,7 +8,7 @@ siteRoot = "http://www.treecraft.se"
 
 config :: Configuration
 config = defaultConfiguration
-    { deployCommand = "sync --site" }
+    { deployCommand = "sync" }
 
 main :: IO ()
 main = hakyllWith config $ do

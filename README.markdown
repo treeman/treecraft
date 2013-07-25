@@ -1,6 +1,13 @@
 
 Site for our minecraft server.
 
+Crontab
+-------
+
+`
+* 4 * * * /home/tree/code/treecraft/sync --world 2>&1 >> /var/log/treecraft
+`
+
 TODO
 ====
 
