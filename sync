@@ -57,7 +57,7 @@ sub sync_world {
 
 sub build {
     say "Building site...\n";
-    system("$root/site build 2>&1");
+    system("cd $root && site build 2>&1");
 }
 
 sub sync_site {
