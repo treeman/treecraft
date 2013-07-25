@@ -25,23 +25,18 @@ if ($help) {
     help();
 }
 
-if ($sync_site) {
-    say "Syncing site...\n";
-
-    # Sync css (cache: 1 week)
-    say "Syncing css";
-    sync ("$site/css", "max-age=604800", "-m text/css");
-
-    # Sync rest (cache: 1 hour)
-    say "Syncing rest";
-    sync ("$site/", "max-age=3600, must-revalidate");
-
-    say "Removing deleted";
-    sync ("$site/", "", "--delete-removed");
-}
-
 if ($sync_world) {
     say "Syncing world...\n";
+
+    say "Making world.";
+    system("$root/make_world");
+
+    sync_site();
+    exit;
+}
+
+if ($sync_site) {
+    sync_site();
 }
 
 sub sync {
@@ -55,5 +50,21 @@ sub sync {
     my $cmd = "s3cmd sync $option --acl-public $header $root/$dir s3://$bucket/";
 
     system("$cmd 2>&1");
+}
+
+sub sync_site {
+    say "Syncing site...\n";
+
+    # Sync css (cache: 1 week)
+    say "Syncing css";
+    sync ("$site/css", "max-age=604800", "-m text/css");
+    sync ("$site/*.css", "max-age=604800", "-m text/css");
+
+    # Sync rest (cache: 1 hour)
+    say "Syncing rest";
+    sync ("$site/", "max-age=3600, must-revalidate");
+
+    say "Removing deleted";
+    sync ("$site/", "", "--delete-removed");
 }
 

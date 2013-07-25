@@ -5,25 +5,24 @@ use Modern::Perl;
 use File::Basename;
 
 my $ip = "198.24.166.242";
-#my $world = "treecraft";
-my $world = "config";
+my $world = "treecraft";
+#my $world = "config";
 my $clone_dir = "world";
 my $save_dir = "_world";
 
 my $root = dirname(__FILE__);
 
-#my $dir = $root;
 $clone_dir = "$root/$clone_dir/";
 mkdir $clone_dir unless -d $clone_dir;
 
 say "Cloning...";
 system("wget -m \"ftp://$ip/$world\" -P $clone_dir -nH 2>&1");
 
-say "Generating world..."
-# TODO generate minecraft map to $save_dir
-#system(
+say "Generating world...";
+my $world_dir = "$clone_dir$world";
+my $map_dir = "$root/$save_dir";
 
-# TODO save world to site. Probably with hakyll and then deploy site.
+system ("overviewer.py $world_dir $map_dir");
 
 say "Done!";
 

@@ -20,6 +20,10 @@ main = hakyllWith config $ do
         route   idRoute
         compile compressCssCompiler
 
+    match "_world/**" $ do
+        route   worldRoute
+        compile copyFileCompiler
+
     match ("404.markdown" .||. "ip.markdown") $ do
         route   dropIndexRoute
         compile $ do
@@ -32,6 +36,9 @@ main = hakyllWith config $ do
 dropIndexRoute :: Routes
 dropIndexRoute = customRoute $
      (++ "/index.html"). dropExtension . toFilePath
+
+worldRoute :: Routes
+worldRoute = gsubRoute "_world/" (const "")
 
 siteCtx :: Context String
 siteCtx = mconcat
