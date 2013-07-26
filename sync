@@ -4,6 +4,7 @@ use autodie;
 use Modern::Perl;
 use File::Basename;
 use Getopt::Long;
+use POSIX qw(strftime);
 
 my $bucket = "www.treecraft.se";
 
@@ -33,6 +34,7 @@ sync_world() if $sync_world;
 build() if $build || $sync_world;
 sync_site();
 
+say "DONE at " . strftime("%a, %d %b %Y %H:%M:%S %z", localtime(time()));
 
 sub sync_world {
     say "Syncing world...\n";
@@ -50,14 +52,14 @@ sub sync_world {
     my $world_dir = "$clone_dir$world";
     my $save_dir = "$root/$world_save_dir";
 
-    system ("overviewer.py $world_dir $save_dir");
+    system ("/home/tree/bin/overviewer.py $world_dir $save_dir");
 
     say "Done!";
 }
 
 sub build {
     say "Building site...\n";
-    system("cd $root && site build 2>&1");
+    system("cd $root && ./site rebuild 2>&1");
 }
 
 sub sync_site {
