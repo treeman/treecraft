@@ -20,8 +20,12 @@ main = hakyllWith config $ do
         route   idRoute
         compile compressCssCompiler
 
-    match "_world/**" $ do
+    match ("_world/**.png" .||. "_world/**.js" .||. "_world/**.css") $ do
         route   worldRoute
+        compile copyFileCompiler
+
+    match "index.html" $ do
+        route  idRoute
         compile copyFileCompiler
 
     match ("404.markdown" .||. "ip.markdown") $ do
