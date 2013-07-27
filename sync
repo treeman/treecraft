@@ -98,30 +98,23 @@ sub make_config {
     my ($world_dir, $output_dir) = @_;
 
     my $config = <<END;
-worlds["treecraft"] = $world_dir
+worlds["treecraft"] = "$world_dir"
 
 renders["day"] = {
     "world": "treecraft",
     "title": "Day",
-    "rendermode": smooth_lightning,
-    "dimension": "overworld",
-}
-
-renders["night"] = {
-    "world": "treecraft",
-    "title": "Night",
-    "rendermode": smooth_night,
+    "rendermode": normal,
     "dimension": "overworld",
 }
 
 renders["nether"] = {
     "world": "treecraft",
     "title": "Nether",
-    "rendermode": nether_smooth_lightning,
+    "rendermode": nether,
     "dimension": "nether",
 }
 
-outputdir = $output_dir
+outputdir = "$output_dir"
 END
 
     my $file = "$root/world_conf.py";
