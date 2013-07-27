@@ -12,37 +12,37 @@ config = defaultConfiguration
     { deployCommand = "sync" }
 
 main :: IO ()
-main = hakyllWith config $ do
-    match ("images/**" .||. "favicon.ico") $ do
-        route   idRoute
-        compile copyFileCompiler
+main = do
+    now <- currentTime
 
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+    hakyllWith config $ do
+        match ("images/**" .||. "favicon.ico") $ do
+            route   idRoute
+            compile copyFileCompiler
 
-    match ("_world/**.png" .||. "_world/**.js" .||. "_world/**.css") $ do
-        route   worldRoute
-        compile copyFileCompiler
+        match "css/*" $ do
+            route   idRoute
+            compile compressCssCompiler
 
-    create ["index.html"] $ do
-        route  idRoute
-        --compile copyFileCompiler
-        compile $ do
-            --let now = currentTime
-            let now = "NOW"
-            let ctx = constField "now" now <> siteCtx
+        match ("_world/**.png" .||. "_world/**.js" .||. "_world/**.css") $ do
+            route   worldRoute
+            compile copyFileCompiler
 
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/index.html" ctx
+        create ["index.html"] $ do
+            route  idRoute
+            compile $ do
+                let ctx = constField "now" now <> siteCtx
 
-    match ("404.markdown" .||. "ip.markdown") $ do
-        route   dropIndexRoute
-        compile $ do
-            pandocCompiler
-                >>= loadAndApplyTemplate "templates/site.html" siteCtx
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/index.html" ctx
 
-    match "templates/*" $ compile templateCompiler
+        match ("404.markdown" .||. "ip.markdown") $ do
+            route   dropIndexRoute
+            compile $ do
+                pandocCompiler
+                    >>= loadAndApplyTemplate "templates/site.html" siteCtx
+
+        match "templates/*" $ compile templateCompiler
 
 -- Move to subdirectories to avoid extensions in links.
 dropIndexRoute :: Routes
