@@ -3,3 +3,4 @@ _*
 *.o
 site
 world
+world_conf.py

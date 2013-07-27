@@ -46,12 +46,15 @@ sub sync_world {
 
     say "Cloning...";
     system("wget -m \"ftp://$server/$world\" -P $clone_dir -nH 2>&1");
-    say("wget -m \"ftp://$server/$world\" -P $clone_dir -nH 2>&1");
 
-    say "Generating world...";
     my $world_dir = "$clone_dir$world";
     my $save_dir = "$root/$world_save_dir";
 
+    say "Generating config";
+    my $conf_file = make_config ($world_dir, $save_dir);
+    say "Config file: $conf_file";
+
+    say "Generating world...";
     system ("/home/tree/bin/overviewer.py $world_dir $save_dir");
 
     say "Done!";
@@ -88,5 +91,44 @@ sub sync {
 
     my $cmd = "s3cmd sync $option --acl-public $header $root/$dir s3://$bucket/";
     system("$cmd 2>&1");
+}
+
+sub make_config {
+    my ($world_dir, $output_dir) = @_;
+
+    my $config = <<END;
+worlds["treecraft"] = $world_dir
+
+renders["day"] = {
+    "world": "treecraft",
+    "title": "Day",
+    "rendermode": smooth_lightning,
+    "dimension": "overworld",
+}
+
+renders["night"] = {
+    "world": "treecraft",
+    "title": "Night",
+    "rendermode": smooth_night,
+    "dimension": "overworld",
+}
+
+renders["nether"] = {
+    "world": "treecraft",
+    "title": "Nether",
+    "rendermode": nether_smooth_lightning,
+    "dimension": "nether",
+}
+
+outputdir = $output_dir
+END
+
+    my $file = "$root/world_conf.py";
+
+    open my $out, '>', $file;
+    print $out $config;
+    close $out;
+
+    return $file;
 }
 
