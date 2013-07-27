@@ -59,5 +59,5 @@ siteCtx = mconcat
     ]
 
 currentTime :: IO String
-currentTime = fmap show getCurrentTime
+currentTime = fmap show getZonedTime
 

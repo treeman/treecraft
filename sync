@@ -55,14 +55,13 @@ sub sync_world {
     say "Config file: $conf_file";
 
     say "Generating world...";
-    #system ("/home/tree/bin/overviewer.py $world_dir $save_dir");
     system ("/home/tree/bin/overviewer.py --config=$conf_file");
 
     say "Done!";
 }
 
 sub build {
-    say "Building site...\n";
+    say "Rebuilding site...\n";
     system("cd $root && ./site rebuild 2>&1");
 }
 
