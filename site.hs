@@ -2,6 +2,7 @@
 
 import Data.Monoid
 import System.FilePath
+import Data.Time
 import Hakyll
 
 siteRoot = "http://www.treecraft.se"
@@ -24,9 +25,16 @@ main = hakyllWith config $ do
         route   worldRoute
         compile copyFileCompiler
 
-    match "index.html" $ do
+    create ["index.html"] $ do
         route  idRoute
-        compile copyFileCompiler
+        --compile copyFileCompiler
+        compile $ do
+            --let now = currentTime
+            let now = "NOW"
+            let ctx = constField "now" now <> siteCtx
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/index.html" ctx
 
     match ("404.markdown" .||. "ip.markdown") $ do
         route   dropIndexRoute
@@ -49,4 +57,7 @@ siteCtx = mconcat
     [ constField "ip" "treecraft.se:25692"
     , defaultContext
     ]
+
+currentTime :: IO String
+currentTime = fmap show getCurrentTime
 
