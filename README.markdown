@@ -1,19 +1,13 @@
 
-Site for our minecraft server.
+Site for our minecraft server. <http://www.treecraft.se>
 
 Crontab
 -------
 
-`
-* 4 * * * /home/tree/code/treecraft/sync --world 2>&1 >> /var/log/treecraft
-`
+* `4 * * * /home/tree/code/treecraft/sync --world 2>&1`
 
 TODO
 ====
 
-* Minecraft world
-    0. Cron every day
-    1. Automatically fetch world from ftp server
-    2. Generate world with "Minecraft Overviewer"
-    3. Profit!
+* Cleanup command line flags. Should be able to only fetch the world or sync without fetching the world.
 
