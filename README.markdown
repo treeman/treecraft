@@ -1,10 +1,7 @@
 
 Site for our minecraft server. <http://www.treecraft.se>
 
-Crontab
--------
-
-* `4 * * * /home/tree/code/treecraft/sync --world 2>&1`
+Crontab: `4 * * * /home/tree/code/treecraft/sync --world`
 
 TODO
 ====
