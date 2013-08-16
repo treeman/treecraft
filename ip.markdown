@@ -1,6 +1,6 @@
 ---
-title: treecraft.se:25692
+title: mc.treecraft.se
 ---
 
-treecraft.se:25692
+mc.treecraft.se
 

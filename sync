@@ -8,8 +8,10 @@ use POSIX qw(strftime);
 
 my $bucket = "www.treecraft.se";
 
-my $server = "198.24.166.242";
+# Password in .netrc
+my $server = "ftp.clanslots.com";
 my $world = "treecraft";
+my $world_nether = "treecraft_nether";
 my $world_save_dir = "_world";
 
 my $help;
@@ -46,12 +48,14 @@ sub sync_world {
 
     say "Cloning...";
     system("wget -m \"ftp://$server/$world\" -P $clone_dir -nH 2>&1");
+    system("wget -m \"ftp://$server/$world_nether\" -P $clone_dir -nH 2>&1");
 
     my $world_dir = "$clone_dir$world";
+    my $world_nether_dir = "$clone_dir$world_nether";
     my $save_dir = "$root/$world_save_dir";
 
     say "Generating config";
-    my $conf_file = make_config ($world_dir, $save_dir);
+    my $conf_file = make_config ($world_dir, $world_nether_dir, $save_dir);
     say "Config file: $conf_file";
 
     say "Generating world...";
@@ -94,10 +98,11 @@ sub sync {
 }
 
 sub make_config {
-    my ($world_dir, $output_dir) = @_;
+    my ($world_dir, $world_nether_dir, $output_dir) = @_;
 
     my $config = <<END;
 worlds["treecraft"] = "$world_dir"
+worlds["treecraft_nether"] = "$world_nether_dir"
 
 renders["day"] = {
     "world": "treecraft",
@@ -107,7 +112,7 @@ renders["day"] = {
 }
 
 renders["nether"] = {
-    "world": "treecraft",
+    "world": "treecraft_nether",
     "title": "Nether",
     "rendermode": nether,
     "dimension": "nether",
